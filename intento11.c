@@ -30,6 +30,8 @@ pthread_mutex_t mutex_v = PTHREAD_MUTEX_INITIALIZER;
 
 int fde;
 
+int lsock;
+/*
 struct epoll_event{
     uint32_t events; //moniteramo epollin
     epoll_data_t data;
@@ -42,7 +44,7 @@ struct epoll_data_t{
         uint32_t u32;
         uint64_t u64;
     } data;
-};
+};*/
 
 /*
  * Para probar, usar netcat. Ej:
@@ -124,32 +126,37 @@ void handle_conn(int csock)
 void wait_for_clients(pthread_t lsock)
 {
 	int csock;
-	/* Esperamos una conexión, no nos interesa de donde viene */
-	
+	struct epoll_event ev,  events[MAX_EVENTS];
 
-    int nfds= epoll_wait(fde,ev.events,MAX_EVENTS,-1);
+    int nfds= epoll_wait(fde,events,MAX_EVENTS,-1);
     if(nfds==-1){
         perror("epoll_wait");
         exit(EXIT_FAILURE);
     }
-    int n=MAX_EVENTS;
-    for(n=0;n<nfds;++n){
-        if(ev.events[n].data.fd==fd){
+   // int n=MAX_EVENTS;
+    for(int n=0;n<nfds;++n){
+        if(events[n].data.fd==fd){
             csock = accept(fd, NULL, NULL);
             if (csock < 0)
                 quit("accept");
                 exit(EXIT_FAILURE);
             }
 
-            setnonblocking(csock);
-            ev.events = EPOLLIN | EPOLLET;
+         //   setnonblocking(csock);
+            ev.events = EPOLLIN | EPOLLONESHOT;
             ev.data.fd = csock;
             if (epoll_ctl(fde, EPOLL_CTL_ADD, csock,&ev) == -1) {
                 perror("epoll_ctl: conn_sock");
                 exit(EXIT_FAILURE);
             }else{
-                do_use_fd(ev[n].data.fd);
-            }
+               
+                handle_conn(events[n].data.fd);
+                ev.events = EPOLLIN | EPOLLONESHOT;
+                ev.data.fd =events[n].data.fd;
+                if (epoll_ctl(fde, EPOLL_CTL_MOD, events[n].data.fd,&ev) == -1) {
+                    perror("epoll_ctl: conn_sock");
+                    exit(EXIT_FAILURE);
+            }}
         }
 	
 
@@ -215,20 +222,23 @@ void prepare_men(){
 }
 
 int main()
-{   fde=epoll_create1(0);
+
+
+{ 
+     fde=epoll_create1(0);
     if (fde == -1) {
         perror("epoll_create1");
         exit(EXIT_FAILURE);
     }
 
-    
+ struct  epoll_event ev;
+
 
     
 
-	int lsock;
  
 
-	//lsock = mk_lsock();
+	lsock = mk_lsock();
     
     ev.events = EPOLLIN;
     ev.data.fd = mk_lsock;
@@ -237,17 +247,17 @@ int main()
         exit(EXIT_FAILURE);
     }
     
-    pthread_t pthread;
+    
 
 	prepare_men();
 
     for(int i=0;i<MAX_EVENTS;i++){
-        
-        pthread_create(pthread[i],NULL,wait_for_clients(pthread[i]),&fde);
+        pthread_t pthread;
+        pthread_create(&pthread,NULL,(void *)wait_for_clients,&fde);
     }
 
-	munmap(memptr, BYTE_SIZE);
+	//munmap(memptr, BYTE_SIZE);
   	close(fd);
- 	unlink(BACKING_FILE);
+ //	unlink(BACKING_FILE);
 	return 0;	
 }
