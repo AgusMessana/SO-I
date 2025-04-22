@@ -3,7 +3,6 @@
 // solo se duplica el stack - cada uno tiene su propio stack , luego todo es =
 // memoria compartida (CHAU PIPES n SOCKETS n fork ; te re cabio gil)
 
-
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
