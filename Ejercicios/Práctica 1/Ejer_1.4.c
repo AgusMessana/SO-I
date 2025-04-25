@@ -1,0 +1,2 @@
+// Si un proceso no libera su memoria con free(), el sistema se encarga de liberar esa memoria al finalziar el programa. Cuando un proceso termina, el sistema operativo reclama todos los recursos que el proceso estaba utilizando, incluyendo la memoria que había reservado en su espacio de direcciones.
+// Sin embargo, es importante destacar lo siguiente: si un proceso reserva memoria dinámicamente y luego pierde la referencia a esa memoria sin liberarla esa memoria se vuelve inaccesible dentro del proceso.

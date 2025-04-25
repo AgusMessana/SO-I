@@ -1,0 +1,2 @@
+// getchar() es una función que tiene como objetivo leer un carácter de la entrada estándar de C. Generalmente, getchar() no es una llamda al sistema ya que el kernel ya ha leído varios caractéres del buffer interno. Sin embargo, si el buffer está vacío y se llama a getchar(), entonces sí se hace una llamda al sistema para solicitar más datos.
+// la función ungetc() se usa para devolver un carácter al buffer de entrada stream. Así, si se realzia un getchar(), la función leerá primer el caracter devuelto por ungetc().
