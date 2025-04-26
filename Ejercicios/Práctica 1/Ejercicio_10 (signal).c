@@ -8,7 +8,7 @@ pid_t target_pid;
 void sigusr1_handler(int sig) {
   printf("PID %d recibió SIGUSR1\n", getpid());
   sleep(1);
-  kell(target_pid, SIGUSR1);
+  kill(target_pid, SIGUSR1);
 }
 
 int main() {
