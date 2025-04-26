@@ -1,9 +1,6 @@
 // Ej. 15 (Servidor de Turnos). Esta vez vamos a usar threads...
-// a) Adapte su implementaci´on de la pr´actica anterior del servidor de turnos para atender concurrentemente
-// a todas las conexiones abiertas levantando un thread nuevo por cada conexi´on. Nota: todos los
-// clientes deber´an poder hacer pedidos sin esperar a otros, y siempre debe poder conectarse un nuevo
-// cliente. Esta vez, se debe garantizar que dos pedidos nunca reciben el mismo entero.
-// b) Implemente una soluci´on con select/epoll.
+// a) Adapte su implementación de la práctica anterior del servidor de turnos para atender concurrentemente a todas las conexiones abiertas levantando un thread nuevo por cada conexión. Nota: todos los clientes deberán poder hacer pedidos sin esperar a otros, y siempre debe poder conectarse un nuevo cliente. Esta vez, se debe garantizar que dos pedidos nunca reciben el mismo entero.
+// b) Implemente una solución con select/epoll.
 // c) Compare la performance de ambas soluciones
 
 #include <stdio.h>
