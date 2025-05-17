@@ -45,10 +45,10 @@ void *cortando(void *arg) {
 
 void *pagando(void *arg) {
   int id_cliente = (int) (long) arg;
-  printf("Cliente %d: hago el pago\n");
+  printf("Cliente %d: hago el pago\n", id_cliente);
   sem_post(&pagar);
   sem_wait(&pago_confirmado);
-  printf("Cliente %d: pago confirmado. Me voy\n");
+  printf("Cliente %d: pago confirmado. Me voy\n", id_cliente);
 
   return NULL;
 }
