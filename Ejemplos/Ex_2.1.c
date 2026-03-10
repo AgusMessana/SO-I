@@ -2,21 +2,21 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <sys/types.h>
 
 
 int main(void) {
   pid_t pid;
   pid = fork();
-  if(pid == -1) {
+  if (pid == -1) {
     exit(EXIT_FAILURE);
   }
-  if(pid == 0) {
+  if (pid == 0) {
     printf("Hola! Soy el hijo!\n");
-    execl("hola.o", "hola.o", NULL);
+    execl("hola_mundo.out", "hola_mundo.out", NULL);
     exit(0);
   } else {
     printf("El hijo tiene pid %d.\n", pid);
-    printf("Mi pid es %d.\n", getpid());
     wait(0);
   }
 
