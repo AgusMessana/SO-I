@@ -1,0 +1,5 @@
+echo $$: devuelve el PID de la terminal que se está usando.
+env: muestra las variables de entorno del proceso actual como PATH o usuario.
+ps: información sobre los estados de los procesos actuales.
+tree (pstree): comando para ver procesos en forma de jerarquía (árbol) para ver qué proceso es padre de cuál.
+strace: herramienta para rastrear llamadas al sistema que un proceso realiza al kernel.

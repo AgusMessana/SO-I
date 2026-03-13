@@ -1,0 +1,35 @@
+a) Si se cierra el file descriptor de la salida estándar (1) ¿qué pasa al escribir al mismo?
+Al cerrar el fd 1, cualquier intento de escritura en él fallará. El Sistema Operativo devolverá un error.
+
+b) Si se cierra el file descriptor de la entrada estándar (0) ¿qué pasa al intentar leer del mismo?
+Al cerrar el fd 0, cualquier intento de lectura mediante la llamada a sistema read(0, ..., ...) devolverá un error.
+
+c) Si un file descriptor se duplica con dup() ¿qué pasa al cerrar una de las copias?
+Cuando se duplica un descriptor de archivo con dup(), se crea una nueva entrada en la tabla de file descriptors del proceso, pero ambas entradas apuntan a la misma entrada en la File Table del Kernel.
+Si se cierra una de las copias, la otra copia permanece válida y puede seguir utilizándose para realizar operaciones de lectura o escritura
+
+d) Al hacer fork(), ¿cómo cambia el valor de getpid()? ¿Y al hacer exec()?
+*Con fork(): el sistema operativo crea un nuevo proceso que es una copia del original. El proceso hijo recibe su propio ID de proceso único.
+Si bien el valor de getpid() no cambia para el proceso padre, el proceso hijo verá un valor de getpid() totalmente nuevo y distinto al de su progenitor
+*Con exec(): esta llamada reemplaza el programa que se está ejecutando por uno nuevo, pero lo hace sin cambiar la Identificación de proceso (PID). El valor devuelto por getpid() será exactamente el mismo antes y después de la ejecución de exec()
+
+e) Con fork(), cree dos procesos y haga que el hijo termine (con exit() o retornando del main) y que el padre duerma indefinidamente sin hacer wait(). ¿Cómo aparece el hijo en la tabla de procesos? ¿Por qué sigue existiendo?
+En la tabla de procesos (usando ps o top), el hijo aparecerá con el estado "Zombie". El proceso sigue existiendo en el sistema porque, aunque terminó su ejecución, el kernel del Sistema Operativo debe conservar un conjunto mínimo de información sobre él.
+Este "slot" en la tabla de procesos solo se libera cuando el padre ejecuta la llamada al sistema wait().
+
+f) Al hacer un malloc de 1GB ¿aumenta el uso de memoria de un proceso? Explique.
+No necesariamente aumenta el uso de memoria física (RAM) de manera inmediata.
+Cuando un proceso solicita memoria dinámica mediante malloc(), esta se asigna en el segmento de Heap. Sin embargo, los sistemas operativos modernos utilizan una técnica llamada asignación perezosa.
+Al ejecutar malloc(1GB), el Kernel simplemente reserva ese espacio en el espacio de direcciones virtuales del proceso, pero no asigna marcos de memoria física real hasta que el proceso efectivamente intenta leer o escribir en esas direcciones.
+
+g) ¿Qué pasa con el uso de memoria de un proceso al realizar fork()? ¿Y exec()?
+*Con fork(): se crea una copia del proceso en un nuevo espacio de memoria. Sin embargo, los procesos no comparten memoria física de forma directa. El Kernel optimiza este proceso mediante la técnica Copy-on-write: la memoria solo se copia físicamente cuando el proceso hijo intenta modificarla. Por lo tanto, inicialmente el uso de memoria física no se duplica, aunque el espacio virtual sí lo hace.
+Con exec(): el Kernel reemplaza la imagen del programa actual por una nueva imagen proveniente del binario ejecutado. Esto significa que el espacio de memoria del programa original se descarta y se carga la estructura de memoria del nuevo programa. El uso de memoria cambiará para ajustarse a los requisitos del nuevo ejecutable, pero el PID se mantiene constante.
+
+h) ¿Qué pasa con los file descriptor de un proceso al hacer fork()? ¿Y exec()?
+*Con fork(): el proceso hijo hereda una copia de la tabla de descriptores de archivo del padre. Esto significa que ambos procesos ven los mismos archivos, pipes y entradas/salidas estándares abiertos hasta ese momento.
+*Con exec(): los descriptores de archivo se mantienen abiertos por defecto. El nuevo programa ejecutado hereda todos los descriptores que estaban abiertos en el proceso original, incluyendo stdin, stdout, stderr y cualquier otro archivo o socket.
+
+i) El comando de cambio de directorio cd suele ser un built-in de la shell. ¿Puede implementarse mediante un programa al igual que, ej., ls?
+No, el comando cd no puede implementarse como un programa externo independiente. La razón principal radica en la jerarquía de procesos: cuando una shell ejecuta un comando externo (como ls), primero debe crear un proceso hijo mediante fork().
+Para que el cambio de directorio sea efectivo, la shell debe ejecutar la operación directamente sobre su propio proceso utilizando la llamada al sistema chdir(). Esta es la razón por la cual cd es un comando built-in y no un binario separado en el disco.
