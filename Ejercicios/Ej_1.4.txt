@@ -1,0 +1,4 @@
+Cuando un proceso finaliza su ejecución, el Sistema Operativo se encarga de reclamar y liberar todos los recursos que le habían sido asignados. Esto incluye la memoria del segmento Heap que fue solicitada mediante malloc() y no fue liberada explícitamente con free().
+Sin embargo, es importante distinguir dos momentos:
+* Durante la ejecución: si el proceso no libera memoria que ya no usa, se produce una fuga de memoria. Esto puede agotar la memoria disponible del sistema si el programa corre durante mucho tiempo.
+* Al terminar: una vez que el proceso pasa al estado Terminado o Zombie, el Kernel realiza las operaciones de limpieza necesarias, eliminando las estructuras del proceso y liberando su memoria física y virtual para que pueda ser utilizada por otros programas.

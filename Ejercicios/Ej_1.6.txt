@@ -1,0 +1,5 @@
+No, getchar() no es una llamada al sistema; es una función de la biblioteca estándar de C.
+Para ser eficiente, la biblioteca estándar utiliza un búfer en el espacio de usuario. Cuando se llama a getchar(), la función intenta leer un carácter de ese búfer interno. Si el búfer está vacío, la biblioteca invoca la verdadera llamada al sistema, que es read().
+
+ungetc() es una función que permite "devolver" un carácter al flujo de entrada para que sea el siguiente en ser leído.
+Esta operación ocurre enteramente en el espacio de usuario. ungetc() simplemente coloca el carácter en el búfer interno de la biblioteca estándar. Al no interactuar con el dispositivo de entrada real, no requiere de una llamada al sistema para funcionar.

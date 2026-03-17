@@ -1,0 +1,3 @@
+No, free() no es una llamada al sistema; es una función de la biblioteca estándar de C.
+Su propósito es gestionar el segmento de Heap dentro del espacio de direcciones virtuales del proceso.
+Cuando se invoca a free(), la biblioteca simplemente marca ese bloque de memoria como "disponible" en sus estructuras internas para que futuras llamadas a malloc() puedan reutilizarlo. Esta operación ocurre enteramente en el espacio de usuario.
