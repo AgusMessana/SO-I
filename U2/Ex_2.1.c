@@ -1,24 +1,12 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
-#include <sys/wait.h>
 #include <sys/types.h>
 
-
 int main(void) {
-  pid_t pid;
-  pid = fork();
-  if (pid == -1) {
-    exit(EXIT_FAILURE);
-  }
-  if (pid == 0) {
-    printf("Hola! Soy el hijo!\n");
-    execl("hola_mundo.out", "hola_mundo.out", NULL);
-    exit(0);
-  } else {
-    printf("El hijo tiene pid %d.\n", pid);
-    wait(0);
-  }
+  pid_t pid1 = getpid();
+  printf("El pid del programa antes de ejecutar execl es %d.\n", pid1);
+  execl("/mnt/i/SO-I/U2/hola_mundo.out", "/mnt/i/SO-I/U2/hola_mundo.out", NULL);
 
   return 0;
 }
