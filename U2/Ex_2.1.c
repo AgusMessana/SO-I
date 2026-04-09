@@ -1,3 +1,8 @@
+/**
+ * Ejemplo:
+ * Proceso que invoca a otro mientras mostramos los PIDs.
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>

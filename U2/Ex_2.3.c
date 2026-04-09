@@ -1,3 +1,8 @@
+/**
+ * Ejemplo:
+ * ¿Cómo se comporta el siguiente programa?
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

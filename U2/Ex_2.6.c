@@ -1,6 +1,6 @@
 /**
  * Ejemplo:
- * Proceso que crea otro con fork, y mostramos que los PIDs varían.
+ * Proceso que crea otro con fork, el proceso parent espera a que finalice el proceso child.
  */
 
 #include <stdio.h>
@@ -15,13 +15,10 @@ int main(void) {
     perror("Error en la ejecución de fork.\n");
     exit(EXIT_FAILURE);
   } else if (pid == 0) {
-    printf("Hola! Soy el hijo! Mi PID es %d y el PID de mi padre es %d.\n",
-           getpid(), getppid());
+    printf("Soy el hijo. Mi padre espera hasta que termine para finalizar.\n");
   } else {
-    printf("Hola! Soy el padre! Mi PID es %d y el PID de mi hijo es %d.\n",
-           getpid(), pid);
+    printf("Soy el padre. Espero a que mi hijo termine para finalizar.\n");
     wait(NULL);
-    exit(0);
   }
 
   return 0;

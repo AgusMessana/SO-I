@@ -1,3 +1,8 @@
+/**
+ * Ejemplo:
+ * Abrir y leer de un archivo 1024 bytes.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
