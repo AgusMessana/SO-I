@@ -4,7 +4,7 @@
 
 int main(void) {
   printf("Hola mundo.\n");
-  printf("El pid del programa hola_mundo.c es %d.\n", getpid());
+  printf("El PID del programa hola_mundo.c es %d.\n", getpid());
   
   return 0;
 }
