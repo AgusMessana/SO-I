@@ -36,6 +36,7 @@ int main(void) {
     if (args[0] == NULL) {
       continue;
     }
+    
     // Crea al hijo que ejecutará los comandos pasados
     pid_t pid = fork();
     if (pid < 0) {
