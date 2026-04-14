@@ -1,0 +1,7 @@
+Valores de registro: no se comparten. Cada thread tiene su propia PC y sus propios registros para funcionar independientemente de otros thread y para realizar cálculos intermedios.
+
+Heap: se comparte. En el heap se guarda la memoria dinámica. Si un hilo reserva memoria, otro hilo puiede acceder a ella si conoce el puntero. De esta forma los  hilos pueden compartir datos grandes.
+
+Variables globales: se comparten. Las variables globales residen en el segmento de datos del proceso. Todos los hilos del mismo proceso tienen acceso a estas variables.
+
+Stack: no se comparte. Cada hilo necesita su propio Stack para gestionar sus llamadas a funciones, parámetros y variables locales. Si todos compartieran el mismo stack, las funciones de un hilo se mezclarían con las del otro, haciendo imposible la ejecución.
