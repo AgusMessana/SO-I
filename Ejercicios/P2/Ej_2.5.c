@@ -7,40 +7,41 @@
 #include <pthread.h>
 #define CANT_VISITANTES 1000000
 int visitantes = 0;
-int flag[] = {0, 0}; // flag[0] = 1 indica que molinete0 quiere entrar, flag[1] = 1 indica que molinete1 quiere entrar.
-int turn = 0; // turn = 0 indica que molinete0 debe entrar, turn = 1 indica que molinete1 debe entrar.
+int flag[] = { 0, 0 };          // flag[0] = 1 indica que molinete0 quiere entrar, flag[1] = 1 indica que molinete1 quiere entrar.
 
-void *molinete0(void* arg) {
-  for(int i = 0; i < CANT_VISITANTES / 2; i++) {
-    //lock
+int turn = 0;                   // turn = 0 indica que molinete0 debe entrar, turn = 1 indica que molinete1 debe entrar.
+
+void *molinete0(void *arg) {
+  for (int i = 0; i < CANT_VISITANTES / 2; i++) {
+    // lock
     flag[0] = 1;
     turn = 1;
     asm("mfence");
-    while(flag[1] && turn == 1);
+    while (flag[1] && turn == 1);
 
-    //sección crítica
+    // sección crítica
     visitantes++;
     printf("m0: visitantes hasta ahora: %d.\n", visitantes);
 
-    //unlock
+    // unlock
     flag[0] = 0;
   }
 
   return NULL;
 }
 
-void *molinete1(void* arg) {
-  for(int i = 0; i < CANT_VISITANTES / 2; i++) {
-    //lock
+void *molinete1(void *arg) {
+  for (int i = 0; i < CANT_VISITANTES / 2; i++) {
+    // lock
     flag[1] = 1;
     turn = 0;
     asm("mfence");
-    while(flag[0] && turn == 0);
+    while (flag[0] && turn == 0);
 
-    //sección crítica
+    // sección crítica
     visitantes++;
     printf("m1: visitantes hasta ahora: %d.\n", visitantes);
-    //unlock
+    // unlock
     flag[1] = 0;
   }
 
