@@ -1,3 +1,5 @@
+¿Cúales de los siguientes componentes del estado de un programa se comparten entre los threads de un proceso?
+
 Valores de registro: no se comparten. Cada thread tiene su propia PC y sus propios registros para funcionar independientemente de otros thread y para realizar cálculos intermedios.
 
 Heap: se comparte. En el heap se guarda la memoria dinámica. Si un hilo reserva memoria, otro hilo puiede acceder a ella si conoce el puntero. De esta forma los  hilos pueden compartir datos grandes.

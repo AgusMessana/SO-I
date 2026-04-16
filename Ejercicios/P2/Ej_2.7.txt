@@ -1,0 +1,4 @@
+Para la versión ingenua (sin exclusión mútua) del jardín ornamental, ¿qué pasa cuando compilamos con optimizaciones?.
+
+Al aplicar optimizaciones, el compilador carga el valor de visitantes a un registro del procesador, hace todo el bucle sumándole al registro y al final guarda el resultado final del registro en la variable visitantes.
+Si hay dos hilos, cada uno lee visitantes = 0 y lo guarda en su registro. Cada uno cuenta los visitantes en sus registros privados, y luego devuelven el valor de sus registros a la variable visitantes. Como resultado, los valores se pisan y se pierden visitantes.

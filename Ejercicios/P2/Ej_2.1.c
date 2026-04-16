@@ -1,3 +1,7 @@
+/**
+ * Suponga que queremos detectar si un array A contiene el entero 42 iterando por el mismo, y si es así, prender la bandera encontrado. ¿Hay diferencia entre los dos fragmentos siguientes? ¿En qué casos?
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 

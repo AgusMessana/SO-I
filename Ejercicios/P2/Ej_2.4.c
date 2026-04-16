@@ -1,7 +1,5 @@
 /**
- * ¿Puede fallar la siguiente aserción?
- * (wr y rd corren en un thread cada uno)
- * Explique. Si puede fallar, arregle el programa.
+ * ¿Puede fallar la siguiente aserción? (wr y rd corren en un thread cada uno). Explique. Si puede fallar, arregle el programa.
  */
 
 #include <stdio.h>

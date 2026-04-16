@@ -1,3 +1,7 @@
+/**
+ * ¿Puede fallar la siguiente aserción? ¿Bajo qué condiciones? Explique. Si puede fallar, arregle el programa.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>

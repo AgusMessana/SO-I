@@ -22,6 +22,7 @@
 static inline void incl(int *p) {
 asm("incl %0": "+m"(*p): :"memory");
 }
+
 /**
  * Al usar dicha instrucción el problema desaparece pues incl es una instrucción única de Assembler. Como el SO sólo hace cambios de conexto entre instrucciones (nunca a mitad de una), la definición se vuelve atómica.
  */
@@ -35,8 +36,9 @@ asm("incl %0": "+m"(*p): :"memory");
  * e) Repita el experimento con esta versión de incl:
  */
 static inline void incl(int *p) {
-  asm("lock; incl %0" : "+m"(*p) : : "memory");
+asm("lock; incl %0": "+m"(*p): :"memory");
 }
+
 /**
  * Para este caso no tendremos problemas en multiprocesador ya que el prefijo lock asegura que el incremento sea atómico, bloqueando el bus de memoria para que ningún otro hilo interfiera mientras se realiza la operación.
  */
