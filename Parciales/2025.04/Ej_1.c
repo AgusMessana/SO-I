@@ -9,7 +9,6 @@
 #define MAX_EVENTS 10
 
 // Definimos instancia global para que todos los procesos la vean.
-int epfd;
 int listen_sd;
 
 void *funcion_thread(void *arg) {
@@ -49,7 +48,7 @@ int main(int argc, char **argv) {
   bind(server_fd, (struct sockaddr *) &server_addr, sizeof(server_addr));
   listen(server_fd, SOMAXCONN);
 
-  // Crear una instancia GLOBAL de epoll
+  // Crear una instancia local de epoll y la compartimos por puntero
   int epoll_fd = epoll_create1(0);
 
   // Agregar el socket a la instancia de epoll
