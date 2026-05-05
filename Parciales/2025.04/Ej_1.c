@@ -8,6 +8,8 @@
 #define PORT 8080
 #define MAX_EVENTS 10
 
+int server_fd;
+
 void *funcion_thread(void *arg) {
   int epoll_fd = *(int *) arg;
   struct epoll_event events[MAX_EVENTS];
@@ -35,7 +37,7 @@ int main(int argc, char **argv) {
   pthread_t th[nproc];
 
   // Crear socket de escucha
-  int server_fd = socket(AF_INET, SOCK_STREAM, 0);
+  server_fd = socket(AF_INET, SOCK_STREAM, 0);
 
   struct sockaddr_in server_addr;
   server_addr.sin_family = AF_INET;
