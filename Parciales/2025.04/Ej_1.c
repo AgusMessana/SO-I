@@ -9,8 +9,6 @@
 #define MAX_EVENTS 10
 
 // Definimos instancia global para que todos los procesos la vean.
-int listen_sd;
-
 void *funcion_thread(void *arg) {
   int epoll_fd = *(int *) arg;
   struct epoll_event events[MAX_EVENTS];
