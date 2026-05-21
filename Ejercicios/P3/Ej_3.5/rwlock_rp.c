@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <pthread.h>
-#include "rwlock.h"
+#include "rwlock_rp.h"
 
 void rwlock_init(rwlock_t * rw) {
   pthread_mutex_init(&rw->lock, NULL);

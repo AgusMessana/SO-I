@@ -1,5 +1,5 @@
-#ifndef __RWLOCK_H__
-#define __RWLOCK_H__
+#ifndef __RWLOCK_RP_H__
+#define __RWLOCK_RP_H__
 #include <stdio.h>
 #include <pthread.h>
 
@@ -36,4 +36,4 @@ void rwlock_write_lock(rwlock_t * rw);
  */
 void rwlock_write_unlock(rwlock_t * rw);
 
-#endif                          /* __RWLOCK_H__ */
+#endif                          /* __RWLOCK_RP_H__ */
