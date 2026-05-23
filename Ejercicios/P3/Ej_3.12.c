@@ -8,6 +8,12 @@ typedef struct {
   int contador;
 } mi_sem;
 
+void mi_sem_init(mi_sem * sem, int value) {
+  pthread_mutex_init(&sem->mutex, NULL);
+  pthread_cond_init(&sem->cond, NULL);
+  sem->contador = value;
+}
+
 void mi_sem_wait(mi_sem * sem) {
   pthread_mutex_lock(&sem->mutex);
   while (sem->contador == 0) {

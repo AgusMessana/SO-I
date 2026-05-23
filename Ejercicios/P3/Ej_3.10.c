@@ -1,7 +1,6 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
 
 struct barrier {
   pthread_spinlock_t my_spin;
