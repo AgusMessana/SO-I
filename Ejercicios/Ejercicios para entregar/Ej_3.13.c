@@ -21,29 +21,31 @@ void cond_sem_init(struct cond_sem *c) {
 }
 
 void cond_sem_wait(struct cond_sem *c, pthread_mutex_t * user_mtx) {
-  struct cv_node node;
-  sem_init(&node.sem, 0, 0);
-  node.next = NULL;
+  struct cv_node *node = malloc(sizeof(struct cv_node));
+  if (node == NULL) {
+
+    return;
+  }
+
+  sem_init(&node->sem, 0, 0);
+  node->next = NULL;
 
   sem_wait(&c->mtx_internal);
   if (c->head == NULL) {
-    c->head = &node;
-    c->tail = &node;
+    c->head = node;
+    c->tail = node;
   } else {
-    c->tail->next = &node;
-    c->tail = &node;
+    c->tail->next = node;
+    c->tail = node;
   }
-
   sem_post(&c->mtx_internal);
+
   pthread_mutex_unlock(user_mtx);
 
-  /**
-   * El hilo se bloquea acá, ya que el semáforo local arranca en 0.
-   * Al quedarse pausado, la función no retorna y la variable local 'node' sigue viva en el stack, permitiendo que el hilo que hace el 'signal' pueda acceder a ella de forma segura a través de los punteros.
-   */
-  sem_wait(&node.sem);
+  sem_wait(&node->sem);
 
-  sem_destroy(&node.sem);
+  sem_destroy(&node->sem);
+  free(node);
   pthread_mutex_lock(user_mtx);
 }
 
@@ -81,3 +83,14 @@ void cond_sem_broadcast(struct cond_sem *c) {
 void cond_sem_destroy(struct cond_sem *c) {
   sem_destroy(&c->mtx_internal);
 }
+
+/**
+ * Problemas de la implementación:
+ * Usar un solo semáforo compartido para simular una variable de condición rompe todo por dos razones:
+
+ * 1. Señales que no se pierden: En una variable de condición real, si tiro un signal y no hay nadie esperando, la señal se tiene que perder. Con el semáforo de la práctica, el sem_post te deja un crédito. El próximo hilo que haga wait va a pasar de largo con una señal vieja del pasado en vez de bloquearse
+
+ * 2. El bache de tiempo: Soltar el mutex y dormir al hilo es un paso único y atómico. Con semáforos hay que hacer primero unlock del mutex y recién después el wait del semáforo. En ese microsegundo del medio, si el sistema corta el hilo y entra otro que toma el mutex y mete un signal, la señal se pierde porque el hilo viejo todavía no se durmió en el semáforo, dandonos un Deadlock
+ 
+ * La solución en nuestro codigo a esto fue: Armamos una cola explícita en el heap donde cada hilo tiene su propio semáforo privado arrancando en 0. Así, el signal o broadcast solo despierta a los que ya están en la lista. Además, usando malloc evitamos que el broadcast rompa los punteros si un hilo se despierta muy rápido y libera su memoria mientras el bucle sigue recorriendo a los demás
+ */

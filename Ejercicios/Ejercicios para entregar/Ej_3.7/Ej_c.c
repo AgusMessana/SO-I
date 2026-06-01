@@ -46,6 +46,7 @@ void *pushear_tabaco_f(void *arg) {
     }
     pthread_mutex_unlock(&mtx);
   }
+
   return NULL;
 }
 
@@ -64,6 +65,7 @@ void *pushear_papel_f(void *arg) {
     }
     pthread_mutex_unlock(&mtx);
   }
+
   return NULL;
 }
 
@@ -82,6 +84,7 @@ void *pushear_fosforos_f(void *arg) {
     }
     pthread_mutex_unlock(&mtx);
   }
+
   return NULL;
 }
 
@@ -91,6 +94,8 @@ void *fumador1(void *arg) {
     fumar(1);
     sem_post(&otra_vez);
   }
+
+  return NULL;
 }
 
 void *fumador2(void *arg) {
@@ -99,6 +104,8 @@ void *fumador2(void *arg) {
     fumar(2);
     sem_post(&otra_vez);
   }
+
+  return NULL;
 }
 
 void *fumador3(void *arg) {
@@ -107,6 +114,8 @@ void *fumador3(void *arg) {
     fumar(3);
     sem_post(&otra_vez);
   }
+
+  return NULL;
 }
 
 int main() {
