@@ -30,6 +30,8 @@ suscribirse(ServerPid) ->
             ok_suscrito;
         {error, ya_suscrito} ->
             ya_estaba
+    after 5000 ->
+        {error, timeout}
     end.
 
 desuscribirse(ServerPid) ->
@@ -37,6 +39,8 @@ desuscribirse(ServerPid) ->
     receive
         {ok, desuscrito} ->
             ok_desuscrito
+    after 5000 ->
+        {error, timeout}
     end.
 
 difundir(ServerPid, Mensaje) ->
