@@ -1,6 +1,6 @@
 -module(ej_5_5).
--export([loop/1, loop_2/1, iniciar/1]).
--export([crear_nodos/2]).
+-export([loop/1, loop_2/1, iniciar_nums/1, iniciar_pids/1]).
+-export([crear_nodos/3]).
 
 loop(NextPid) ->
     receive
@@ -32,20 +32,19 @@ loop_2(NextPid) ->
             ok
     end.
 
-crear_nodos(0, NextPid) ->
+crear_nodos(0, NextPid, _FuncionLoop) ->
     NextPid;
-crear_nodos(CantRestantes, NextPid) ->
-    NuevoPid = spawn(ej_5_5, loop, [NextPid]),
-    crear_nodos(CantRestantes - 1, NuevoPid).
+crear_nodos(CantRestantes, NextPid, FuncionLoop) ->
+    NuevoPid = spawn(ej_5_5, FuncionLoop, [NextPid]),
+    crear_nodos(CantRestantes - 1, NuevoPid, FuncionLoop).
 
-iniciar(CantProcesos) ->
-    PidDerecha = crear_nodos(CantProcesos - 1, self()),
-
-    % DESCOMENTAR LA QUE SE QUIERA USAR Y COMENTAR LA QUE NO SE QUIERA USAR
-    % Para que se envíen N cantidad de mensajes
-    % PidDerecha ! {msg, CantProcesos},
-
-    % Para que dé sólo una vuelta
-    PidDerecha ! {msg, self()},
-
+iniciar_nums(CantProcesos) ->
+    PidDerecha = crear_nodos(CantProcesos - 1, self(), loop),
+    PidDerecha ! {msg, CantProcesos},
     loop(PidDerecha).
+
+% Iniciador para el anillo del testigo (1 sola vuelta)
+iniciar_pids(CantProcesos) ->
+    PidDerecha = crear_nodos(CantProcesos - 1, self(), loop_2),
+    PidDerecha ! {msg, self()},
+    loop_2(PidDerecha).
